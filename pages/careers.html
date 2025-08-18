@@ -73,10 +73,12 @@
         }
     };
 
+    let posts = [];
+
     async function fetchPosts() {
         try {
             const response = await fetch('/api/posts');
-            const posts = await response.json();
+            posts = await response.json();
             const careersPosts = posts.filter(post => post.category === 'careers');
             const postsContainer = document.getElementById('posts-container');
             postsContainer.innerHTML = '';
@@ -100,7 +102,7 @@
         }
     }
 
-    function editPost(id) {
+    window.editPost = (id) => {
         const post = posts.find(p => p.id === id);
         modal.querySelector('h2').textContent = 'Edit Post';
         document.getElementById('post-id').value = post.id;
@@ -109,7 +111,7 @@
         modal.style.display = 'block';
     }
 
-    async function deletePost(id) {
+    window.deletePost = async (id) => {
         if (confirm('Are you sure you want to delete this post?')) {
             await fetch(`/api/posts/${id}`, { method: 'DELETE' });
             fetchPosts();
