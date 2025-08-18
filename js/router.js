@@ -15,24 +15,19 @@ const navigate = (path) => {
 };
 
 const handleLocation = async () => {
-    console.log('[router.js] handleLocation called.');
     const path = window.location.pathname;
-    console.log(`[router.js] Current path: ${path}`);
     const route = routes[path] || routes['/'];
-    console.log(`[router.js] Matched route:`, route);
     try {
         const response = await fetch(route.path);
         if (!response.ok) throw new Error(`Failed to fetch ${route.path}`);
         const html = await response.text();
         document.getElementById('app').innerHTML = html;
-        console.log(`[router.js] Content for ${route.category} loaded into #app.`);
         setActiveLink();
         if (onNavigateCallback) {
-            console.log('[router.js] Calling onNavigate callback...');
             onNavigateCallback(route.category);
         }
     } catch (error) {
-        console.error("[router.js] Routing error:", error);
+        console.error("Routing error:", error);
         document.getElementById('app').innerHTML = `<p>Error loading page. Please try again.</p>`;
     }
 };
@@ -48,7 +43,6 @@ const setActiveLink = () => {
 };
 
 const init = (callback) => {
-    console.log('[router.js] init called.');
     onNavigateCallback = callback;
     document.querySelector('nav').addEventListener('click', (e) => {
         if (e.target.matches('a')) {
@@ -60,7 +54,6 @@ const init = (callback) => {
         }
     });
     window.onpopstate = handleLocation;
-    console.log('[router.js] Calling handleLocation for initial page load...');
     handleLocation(); // Initial load
 };
 

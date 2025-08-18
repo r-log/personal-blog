@@ -158,8 +158,6 @@ function onNavigate(category) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('[app.js] DOMContentLoaded event fired.');
-
     // Setup static event listeners
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
@@ -185,6 +183,5 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Initialize the router and start the application
-    console.log('[app.js] Initializing router...');
     router.init(onNavigate);
 });
