@@ -123,12 +123,21 @@ async function deletePost(id) {
 }
 
 // --- Event Delegation and Initialization ---
-function initializePageEventListeners() {
-    const app = document.getElementById('app');
-    if (!app) return;
+function onNavigate(category) {
+    currentCategory = category;
+    if (['coding', 'writing', 'music', 'careers'].includes(category)) {
+        fetchAndRenderPosts();
+    } else {
+        updateAdminUI();
+    }
+}
 
-    app.addEventListener('click', (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Attach one master click listener to the document
+    document.addEventListener('click', (e) => {
         const target = e.target;
+
+        // Delegated events for dynamically loaded content
         if (target.id === 'login-btn') {
             const passwordInput = document.getElementById('password');
             if (passwordInput && passwordInput.value === 'admin') {
@@ -144,38 +153,22 @@ function initializePageEventListeners() {
         } else if (target.dataset.action === 'delete') {
             deletePost(target.dataset.id);
         }
+
+        // Static events that are always present
+        if (target.closest('#logout-btn')) {
+             sessionStorage.removeItem('isAdmin');
+             router.navigate('/');
+        }
+        if (target.matches('.close-btn')) {
+            closePostModal();
+        }
+        if (target.id === 'save-post-btn') {
+            savePost();
+        }
     });
-}
 
-function onNavigate(category) {
-    currentCategory = category;
-    initializePageEventListeners();
-    if (['coding', 'writing', 'music', 'careers'].includes(category)) {
-        fetchAndRenderPosts();
-    } else {
-        updateAdminUI();
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Setup static event listeners
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.onclick = () => {
-            sessionStorage.removeItem('isAdmin');
-            router.navigate('/');
-        };
-    }
-
+    // Handle modal closing via background click
     const modal = document.getElementById('post-modal');
-    const closeBtn = document.querySelector('.close-btn');
-    if (closeBtn) {
-        closeBtn.onclick = closePostModal;
-    }
-    const savePostBtn = document.getElementById('save-post-btn');
-    if (savePostBtn) {
-        savePostBtn.onclick = savePost;
-    }
     window.onclick = (event) => {
         if (event.target == modal) {
             closePostModal();
