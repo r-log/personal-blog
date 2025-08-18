@@ -1,5 +1,6 @@
-let posts = [];
-let currentCategory = 'home';
+(function() {
+    let posts = [];
+    let currentCategory = 'home';
 
 // --- UI Update Functions ---
 function updateAdminUI() {
@@ -165,12 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
-// This function is called by the router after a new page is loaded
-window.onNavigate = (category) => {
-    currentCategory = category;
-    if (['coding', 'writing', 'music', 'careers'].includes(category)) {
-        fetchAndRenderPosts();
-    } else {
-        updateAdminUI();
-    }
-};
+    // This function is called by the router after a new page is loaded
+    window.onNavigate = (category) => {
+        currentCategory = category;
+        if (['coding', 'writing', 'music', 'careers'].includes(category)) {
+            fetchAndRenderPosts();
+        } else {
+            updateAdminUI();
+        }
+    };
+})();
