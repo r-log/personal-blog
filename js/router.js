@@ -18,15 +18,14 @@ const handleLocation = async () => {
     const html = await fetch(route).then((data) => data.text());
     document.getElementById('app').innerHTML = html;
     setActiveLink();
-    if (path.startsWith('/pages')) {
-        // Re-run scripts for dynamic pages
-        const scripts = document.getElementById('app').querySelectorAll('script');
-        scripts.forEach(script => {
-            const newScript = document.createElement('script');
-            newScript.textContent = script.textContent;
-            document.body.appendChild(newScript).parentNode.removeChild(newScript);
-        });
-    }
+
+    // Re-run scripts for the loaded content
+    const scripts = document.getElementById('app').querySelectorAll('script');
+    scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        newScript.textContent = script.textContent;
+        document.body.appendChild(newScript).parentNode.removeChild(newScript);
+    });
 };
 
 const setActiveLink = () => {
