@@ -128,16 +128,23 @@ function initializeEventListeners() {
 
     // Main click handler for the app container
     app.onclick = (e) => {
+        console.log('Click event on #app container:', e);
         const target = e.target;
         const action = target.dataset.action;
         const id = target.dataset.id;
 
+        console.log('Clicked target:', target);
+
         if (target.id === 'login-btn') {
+            console.log('Login button clicked.');
             const password = document.getElementById('password').value;
+            console.log('Password entered:', password);
             if (password === 'admin') { // In a real app, this would be a proper auth call
+                console.log('Password correct. Setting isAdmin flag and routing to home.');
                 sessionStorage.setItem('isAdmin', 'true');
                 window.route('/');
             } else {
+                console.log('Incorrect password.');
                 alert('Incorrect password.');
             }
         } else if (target.id === 'add-post-btn') {
