@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - r-log</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        .login-container h1 {
+            text-align: center;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>LOGIN</h1>
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <script>
+        function login() {
+            const password = document.getElementById('password').value;
+            // This is a simple, insecure password check for demonstration purposes.
+            if (password === 'admin') {
+                sessionStorage.setItem('isAdmin', 'true');
+                window.location.href = '../index.html';
+            } else {
+                alert('Incorrect password.');
+            }
+        }
+    </script>
+</body>
+</html>
