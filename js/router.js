@@ -15,30 +15,20 @@ const navigate = (path) => {
 };
 
 const handleLocation = async () => {
-    console.log(`[Router] handleLocation triggered for path: ${window.location.pathname}`);
     const path = window.location.pathname;
     const route = routes[path] || routes['/'];
-    console.log(`[Router] Matched route for path "${path}":`, route);
-
     try {
         const response = await fetch(route.path);
-        console.log(`[Router] Fetch response for ${route.path}:`, response);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Failed to fetch ${route.path}`);
         const html = await response.text();
         document.getElementById('app').innerHTML = html;
-        console.log(`[Router] Successfully loaded content for "${route.category}" into #app.`);
-        
         setActiveLink();
-        
         if (onNavigateCallback) {
-            console.log(`[Router] Executing onNavigate callback with category: "${route.category}"`);
             onNavigateCallback(route.category);
         }
     } catch (error) {
-        console.error("[Router] Failed to load page content:", error);
-        document.getElementById('app').innerHTML = `<p>Error: Could not load page content. Please check the console for details.</p>`;
+        console.error("Routing error:", error);
+        document.getElementById('app').innerHTML = `<p>Error loading page. Please try again.</p>`;
     }
 };
 
