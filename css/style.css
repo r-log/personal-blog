@@ -275,3 +275,31 @@ body.light-mode .close-btn:hover,
 body.light-mode .close-btn:focus {
     color: #000;
 }
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 2rem;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.login-container h1 {
+    text-align: center;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
