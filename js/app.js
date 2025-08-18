@@ -123,38 +123,57 @@ async function deletePost(id) {
 
 // --- Event Delegation and Initialization ---
 function initializeEventListeners() {
+    console.log('Attempting to initialize event listeners...');
     const app = document.getElementById('app');
     const modal = document.getElementById('post-modal');
 
-    // Main click handler for the app container
-    app.onclick = (e) => {
+    if (!app) {
+        console.error('#app element not found!');
+        return;
+    }
+
+    // Using addEventListener for more robust event handling
+    app.addEventListener('click', (e) => {
+        console.log('Click detected inside #app container.');
         const target = e.target;
-        const action = target.dataset.action;
-        const id = target.dataset.id;
+        console.log('Clicked element:', target);
 
         if (target.id === 'login-btn') {
-            const password = document.getElementById('password').value;
-            if (password === 'admin') { // In a real app, this would be a proper auth call
-                sessionStorage.setItem('isAdmin', 'true');
-                window.route('/');
+            console.log('Login button was clicked.');
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) {
+                const password = passwordInput.value;
+                console.log(`Password entered: "${password}"`);
+                if (password === 'admin') {
+                    console.log('Password is correct. Logging in...');
+                    sessionStorage.setItem('isAdmin', 'true');
+                    window.route('/');
+                } else {
+                    console.log('Password incorrect.');
+                    alert('Incorrect password.');
+                }
             } else {
-                alert('Incorrect password.');
+                console.error('Password input field not found!');
             }
         } else if (target.id === 'add-post-btn') {
             openPostModal();
-        } else if (action === 'edit') {
-            openPostModal(id);
-        } else if (action === 'delete') {
-            deletePost(id);
+        } else if (target.dataset.action === 'edit') {
+            openPostModal(target.dataset.id);
+        } else if (target.dataset.action === 'delete') {
+            deletePost(target.dataset.id);
         }
-    };
+    });
+
+    console.log('Click listener for #app attached.');
 
     // Modal close buttons
-    if (document.querySelector('.close-btn')) {
-        document.querySelector('.close-btn').onclick = closePostModal;
+    const closeBtn = document.querySelector('.close-btn');
+    if (closeBtn) {
+        closeBtn.onclick = closePostModal;
     }
-    if (document.getElementById('save-post-btn')) {
-        document.getElementById('save-post-btn').onclick = savePost;
+    const savePostBtn = document.getElementById('save-post-btn');
+    if (savePostBtn) {
+        savePostBtn.onclick = savePost;
     }
     window.onclick = (event) => {
         if (event.target == modal) {
@@ -180,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // This function is called by the router after a new page is loaded
 window.onNavigate = (category) => {
+    console.log(`onNavigate called for category: ${category}`);
     currentCategory = category;
     initializeEventListeners(); // Re-initialize listeners on new content
     if (['coding', 'writing', 'music', 'careers'].includes(category)) {
