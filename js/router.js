@@ -36,6 +36,7 @@ const setActiveLink = () => {
 
 window.onpopstate = handleLocation;
 window.route = navigate;
+window.handleLocation = handleLocation; // Expose for initial load
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('nav').addEventListener('click', (e) => {
@@ -45,5 +46,4 @@ document.addEventListener('DOMContentLoaded', () => {
             navigate(path);
         }
     });
-    handleLocation();
 });

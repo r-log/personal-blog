@@ -128,23 +128,16 @@ function initializeEventListeners() {
 
     // Main click handler for the app container
     app.onclick = (e) => {
-        console.log('Click event on #app container:', e);
         const target = e.target;
         const action = target.dataset.action;
         const id = target.dataset.id;
 
-        console.log('Clicked target:', target);
-
         if (target.id === 'login-btn') {
-            console.log('Login button clicked.');
             const password = document.getElementById('password').value;
-            console.log('Password entered:', password);
             if (password === 'admin') { // In a real app, this would be a proper auth call
-                console.log('Password correct. Setting isAdmin flag and routing to home.');
                 sessionStorage.setItem('isAdmin', 'true');
                 window.route('/');
             } else {
-                console.log('Incorrect password.');
                 alert('Incorrect password.');
             }
         } else if (target.id === 'add-post-btn') {
@@ -157,8 +150,12 @@ function initializeEventListeners() {
     };
 
     // Modal close buttons
-    document.querySelector('.close-btn').onclick = closePostModal;
-    document.getElementById('save-post-btn').onclick = savePost;
+    if (document.querySelector('.close-btn')) {
+        document.querySelector('.close-btn').onclick = closePostModal;
+    }
+    if (document.getElementById('save-post-btn')) {
+        document.getElementById('save-post-btn').onclick = savePost;
+    }
     window.onclick = (event) => {
         if (event.target == modal) {
             closePostModal();
@@ -174,6 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.route) window.route('/');
         else window.location.href = '/';
     };
+
+    // Kick off the initial page load from app.js
+    if (window.handleLocation) {
+        window.handleLocation();
+    }
 });
 
 // This function is called by the router after a new page is loaded
