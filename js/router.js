@@ -1,12 +1,11 @@
-(function() {
-    const routes = {
-        '/': { path: 'pages/home.html', category: 'home' },
-        '/coding': { path: 'pages/coding.html', category: 'coding' },
-        '/writing': { path: 'pages/writing.html', category: 'writing' },
-        '/music': { path: 'pages/music.html', category: 'music' },
-        '/careers': { path: 'pages/careers.html', category: 'careers' },
-        '/admin': { path: 'pages/admin.html', category: 'admin' }
-    };
+const routes = {
+    '/': { path: 'pages/home.html', category: 'home' },
+    '/coding': { path: 'pages/coding.html', category: 'coding' },
+    '/writing': { path: 'pages/writing.html', category: 'writing' },
+    '/music': { path: 'pages/music.html', category: 'music' },
+    '/careers': { path: 'pages/careers.html', category: 'careers' },
+    '/admin': { path: 'pages/admin.html', category: 'admin' }
+};
 
 const navigate = (path) => {
     window.history.pushState({}, path, window.location.origin + path);
@@ -38,6 +37,13 @@ const setActiveLink = () => {
 window.onpopstate = handleLocation;
 window.route = navigate;
 
-    // Initial load
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('nav').addEventListener('click', (e) => {
+        if (e.target.matches('a')) {
+            e.preventDefault();
+            const path = e.target.getAttribute('href');
+            navigate(path);
+        }
+    });
     handleLocation();
-})();
+});
