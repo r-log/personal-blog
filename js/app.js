@@ -1,0 +1,157 @@
+let posts = [];
+let currentCategory = 'home';
+
+// --- UI Update Functions ---
+function updateAdminUI() {
+    const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+    document.querySelectorAll('.admin-only').forEach(el => {
+        el.style.display = isAdmin ? 'block' : 'none';
+    });
+    // Also handle the main logout button in the header
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.style.display = isAdmin ? 'block' : 'none';
+    }
+}
+
+// --- Post Management ---
+async function fetchAndRenderPosts() {
+    try {
+        const response = await fetch('/api/posts');
+        posts = await response.json();
+        renderPosts();
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+    }
+}
+
+function renderPosts() {
+    const postsContainer = document.getElementById('posts-container');
+    if (!postsContainer) return;
+
+    const categoryPosts = posts.filter(post => post.category === currentCategory);
+    postsContainer.innerHTML = '';
+    categoryPosts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.content}</p>
+            <div class="admin-only" style="display: none;">
+                <button data-action="edit" data-id="${post.id}">Edit</button>
+                <button data-action="delete" data-id="${post.id}">Delete</button>
+            </div>
+        `;
+        postsContainer.appendChild(postElement);
+    });
+    updateAdminUI();
+}
+
+// --- Modal Management ---
+function openPostModal(id) {
+    const modal = document.getElementById('post-modal');
+    if (id) {
+        const post = posts.find(p => p.id === id);
+        modal.querySelector('h2').textContent = 'Edit Post';
+        document.getElementById('post-id').value = post.id;
+        document.getElementById('title').value = post.title;
+        document.getElementById('content').value = post.content;
+    } else {
+        modal.querySelector('h2').textContent = 'Create New Post';
+        document.getElementById('post-id').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('content').value = '';
+    }
+    modal.style.display = 'block';
+}
+
+function closePostModal() {
+    document.getElementById('post-modal').style.display = 'none';
+}
+
+async function savePost() {
+    const id = document.getElementById('post-id').value;
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+
+    if (title && content) {
+        const post = { title, content, category: currentCategory };
+        if (id) {
+            post.id = id;
+            await fetch(`/api/posts/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(post)
+            });
+        } else {
+            await fetch('/api/posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(post)
+            });
+        }
+        closePostModal();
+        await fetchAndRenderPosts();
+    } else {
+        alert('Please fill out all fields.');
+    }
+}
+
+async function deletePost(id) {
+    if (confirm('Are you sure you want to delete this post?')) {
+        await fetch(`/api/posts/${id}`, { method: 'DELETE' });
+        await fetchAndRenderPosts();
+    }
+}
+
+// --- Event Delegation and Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+    const app = document.getElementById('app');
+    const modal = document.getElementById('post-modal');
+
+    // Main click handler for the app container
+    app.addEventListener('click', (e) => {
+        const target = e.target;
+        const action = target.dataset.action;
+        const id = target.dataset.id;
+
+        if (target.id === 'login-btn') {
+            const password = document.getElementById('password').value;
+            if (password === 'admin') {
+                sessionStorage.setItem('isAdmin', 'true');
+                window.route('/');
+            } else {
+                alert('Incorrect password.');
+            }
+        } else if (target.id === 'add-post-btn') {
+            openPostModal();
+        } else if (action === 'edit') {
+            openPostModal(id);
+        } else if (action === 'delete') {
+            deletePost(id);
+        }
+    });
+
+    // Modal close buttons
+    document.querySelector('.close-btn').onclick = closePostModal;
+    document.getElementById('save-post-btn').onclick = savePost;
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            closePostModal();
+        }
+    };
+    
+    // Logout button
+    document.getElementById('logout-btn').onclick = () => {
+        sessionStorage.removeItem('isAdmin');
+        window.location.href = '/';
+    };
+});
+
+// This function is called by the router after a new page is loaded
+window.onNavigate = (category) => {
+    currentCategory = category;
+    if (['coding', 'writing', 'music', 'careers'].includes(category)) {
+        fetchAndRenderPosts();
+    }
+    updateAdminUI();
+};

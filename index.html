@@ -39,7 +39,7 @@
             <input type="hidden" id="post-id">
             <input type="text" id="title" placeholder="Title">
             <textarea id="content" placeholder="Content" rows="10"></textarea>
-            <button onclick="window.savePost()">Save</button>
+            <button id="save-post-btn">Save</button>
         </div>
     </div>
     <footer>
@@ -48,6 +48,7 @@
             <a href="https://www.linkedin.com/in/roko-kundid-92bba6303/" target="_blank"><i class="fab fa-linkedin"></i></a>
         </div>
     </footer>
+    <script src="js/app.js"></script>
     <script src="js/router.js"></script>
     <script>
         const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
@@ -73,14 +74,6 @@
         }
 
         toggleSwitch.addEventListener('change', switchTheme, false);
-
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.onclick = () => {
-                sessionStorage.removeItem('isAdmin');
-                window.location.href = '/';
-            };
-        }
 
         const logo = document.getElementById('logo');
         const originalText = logo.textContent;
@@ -114,17 +107,6 @@
         });
 
         observer.observe(logo);
-
-        const modal = document.getElementById('post-modal');
-        const closeBtn = document.querySelector('.close-btn');
-        closeBtn.onclick = () => {
-            modal.style.display = 'none';
-        };
-        window.onclick = (event) => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
     </script>
 </body>
 </html>
