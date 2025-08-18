@@ -122,19 +122,19 @@ async function deletePost(id) {
 }
 
 // --- Event Delegation and Initialization ---
-document.addEventListener('DOMContentLoaded', () => {
+function initializeEventListeners() {
     const app = document.getElementById('app');
     const modal = document.getElementById('post-modal');
 
     // Main click handler for the app container
-    app.addEventListener('click', (e) => {
+    app.onclick = (e) => {
         const target = e.target;
         const action = target.dataset.action;
         const id = target.dataset.id;
 
         if (target.id === 'login-btn') {
             const password = document.getElementById('password').value;
-            if (password === 'admin') {
+            if (password === 'admin') { // In a real app, this would be a proper auth call
                 sessionStorage.setItem('isAdmin', 'true');
                 window.route('/');
             } else {
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (action === 'delete') {
             deletePost(id);
         }
-    });
+    };
 
     // Modal close buttons
     document.querySelector('.close-btn').onclick = closePostModal;
@@ -157,17 +157,22 @@ document.addEventListener('DOMContentLoaded', () => {
             closePostModal();
         }
     };
-    
-    // Logout button
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Logout button is in the static header, so it can be set up once
     document.getElementById('logout-btn').onclick = () => {
         sessionStorage.removeItem('isAdmin');
-        window.location.href = '/';
+        // Use router to navigate to home to reload content
+        if (window.route) window.route('/');
+        else window.location.href = '/';
     };
 });
 
 // This function is called by the router after a new page is loaded
 window.onNavigate = (category) => {
     currentCategory = category;
+    initializeEventListeners(); // Re-initialize listeners on new content
     if (['coding', 'writing', 'music', 'careers'].includes(category)) {
         fetchAndRenderPosts();
     } else {
