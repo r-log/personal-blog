@@ -124,6 +124,7 @@ async function deletePost(id) {
 
 // --- Event Delegation and Initialization ---
 function onNavigate(category) {
+    console.log(`[App] onNavigate received category: "${category}"`);
     currentCategory = category;
     if (['coding', 'writing', 'music', 'careers'].includes(category)) {
         fetchAndRenderPosts();
