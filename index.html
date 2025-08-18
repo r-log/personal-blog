@@ -32,6 +32,16 @@
         </nav>
     </header>
     <main id="app"></main>
+    <div id="post-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2></h2>
+            <input type="hidden" id="post-id">
+            <input type="text" id="title" placeholder="Title">
+            <textarea id="content" placeholder="Content" rows="10"></textarea>
+            <button onclick="window.savePost()">Save</button>
+        </div>
+    </div>
     <footer>
         <div class="social-icons">
             <a href="https://github.com/r-log" target="_blank"><i class="fab fa-github"></i></a>
@@ -65,10 +75,7 @@
         toggleSwitch.addEventListener('change', switchTheme, false);
 
         document.addEventListener('DOMContentLoaded', () => {
-            const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
-            if (isAdmin) {
-                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
-            }
+            updateAdminUI();
         });
 
         const logoutBtn = document.getElementById('logout-btn');
@@ -111,6 +118,17 @@
         });
 
         observer.observe(logo);
+
+        const modal = document.getElementById('post-modal');
+        const closeBtn = document.querySelector('.close-btn');
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+        };
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
     </script>
 </body>
 </html>
