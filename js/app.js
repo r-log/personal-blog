@@ -33,14 +33,32 @@ function renderPosts() {
     postsContainer.innerHTML = '';
     categoryPosts.forEach(post => {
         const postElement = document.createElement('div');
-        postElement.innerHTML = `
-            <h2>${post.title}</h2>
-            <p>${post.content}</p>
-            <div class="admin-only" style="display: none;">
-                <button data-action="edit" data-id="${post.id}">Edit</button>
-                <button data-action="delete" data-id="${post.id}">Delete</button>
-            </div>
-        `;
+        
+        const title = document.createElement('h2');
+        title.textContent = post.title;
+        postElement.appendChild(title);
+
+        const content = document.createElement('p');
+        content.textContent = post.content;
+        postElement.appendChild(content);
+
+        const adminControls = document.createElement('div');
+        adminControls.className = 'admin-only';
+        adminControls.style.display = 'none';
+
+        const editButton = document.createElement('button');
+        editButton.dataset.action = 'edit';
+        editButton.dataset.id = post.id;
+        editButton.textContent = 'Edit';
+        adminControls.appendChild(editButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.dataset.action = 'delete';
+        deleteButton.dataset.id = post.id;
+        deleteButton.textContent = 'Delete';
+        adminControls.appendChild(deleteButton);
+
+        postElement.appendChild(adminControls);
         postsContainer.appendChild(postElement);
     });
     updateAdminUI();
@@ -152,6 +170,7 @@ window.onNavigate = (category) => {
     currentCategory = category;
     if (['coding', 'writing', 'music', 'careers'].includes(category)) {
         fetchAndRenderPosts();
+    } else {
+        updateAdminUI();
     }
-    updateAdminUI();
 };

@@ -28,9 +28,16 @@ async function handleGet(path, env) {
   }
 }
 
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 async function handlePost(request, env) {
   const post = await request.json();
-  post.id = crypto.randomUUID();
+  post.id = uuidv4();
   await env.BLOG_POSTS.put(post.id, JSON.stringify(post));
   return new Response(JSON.stringify(post), { status: 201, headers: { 'Content-Type': 'application/json' } });
 }
