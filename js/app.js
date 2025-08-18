@@ -1,3 +1,5 @@
+import { router } from './router.js';
+
 let posts = [];
 let currentCategory = 'home';
 
@@ -7,7 +9,6 @@ function updateAdminUI() {
     document.querySelectorAll('.admin-only').forEach(el => {
         el.style.display = isAdmin ? 'block' : 'none';
     });
-    // Also handle the main logout button in the header
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.style.display = isAdmin ? 'block' : 'none';
@@ -122,38 +123,19 @@ async function deletePost(id) {
 }
 
 // --- Event Delegation and Initialization ---
-function initializeEventListeners() {
-    console.log('Attempting to initialize event listeners...');
+function initializePageEventListeners() {
     const app = document.getElementById('app');
-    const modal = document.getElementById('post-modal');
+    if (!app) return;
 
-    if (!app) {
-        console.error('#app element not found!');
-        return;
-    }
-
-    // Using addEventListener for more robust event handling
     app.addEventListener('click', (e) => {
-        console.log('Click detected inside #app container.');
         const target = e.target;
-        console.log('Clicked element:', target);
-
         if (target.id === 'login-btn') {
-            console.log('Login button was clicked.');
             const passwordInput = document.getElementById('password');
-            if (passwordInput) {
-                const password = passwordInput.value;
-                console.log(`Password entered: "${password}"`);
-                if (password === 'admin') {
-                    console.log('Password is correct. Logging in...');
-                    sessionStorage.setItem('isAdmin', 'true');
-                    window.route('/');
-                } else {
-                    console.log('Password incorrect.');
-                    alert('Incorrect password.');
-                }
+            if (passwordInput && passwordInput.value === 'admin') {
+                sessionStorage.setItem('isAdmin', 'true');
+                router.navigate('/');
             } else {
-                console.error('Password input field not found!');
+                alert('Incorrect password.');
             }
         } else if (target.id === 'add-post-btn') {
             openPostModal();
@@ -163,10 +145,29 @@ function initializeEventListeners() {
             deletePost(target.dataset.id);
         }
     });
+}
 
-    console.log('Click listener for #app attached.');
+function onNavigate(category) {
+    currentCategory = category;
+    initializePageEventListeners();
+    if (['coding', 'writing', 'music', 'careers'].includes(category)) {
+        fetchAndRenderPosts();
+    } else {
+        updateAdminUI();
+    }
+}
 
-    // Modal close buttons
+document.addEventListener('DOMContentLoaded', () => {
+    // Setup static event listeners
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.onclick = () => {
+            sessionStorage.removeItem('isAdmin');
+            router.navigate('/');
+        };
+    }
+
+    const modal = document.getElementById('post-modal');
     const closeBtn = document.querySelector('.close-btn');
     if (closeBtn) {
         closeBtn.onclick = closePostModal;
@@ -180,31 +181,7 @@ function initializeEventListeners() {
             closePostModal();
         }
     };
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Logout button is in the static header, so it can be set up once
-    document.getElementById('logout-btn').onclick = () => {
-        sessionStorage.removeItem('isAdmin');
-        // Use router to navigate to home to reload content
-        if (window.route) window.route('/');
-        else window.location.href = '/';
-    };
-
-    // Kick off the initial page load from app.js
-    if (window.handleLocation) {
-        window.handleLocation();
-    }
+    // Initialize the router and start the application
+    router.init(onNavigate);
 });
-
-// This function is called by the router after a new page is loaded
-window.onNavigate = (category) => {
-    console.log(`onNavigate called for category: ${category}`);
-    currentCategory = category;
-    initializeEventListeners(); // Re-initialize listeners on new content
-    if (['coding', 'writing', 'music', 'careers'].includes(category)) {
-        fetchAndRenderPosts();
-    } else {
-        updateAdminUI();
-    }
-};

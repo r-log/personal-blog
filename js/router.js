@@ -7,6 +7,8 @@ const routes = {
     '/admin': { path: 'pages/admin.html', category: 'admin' }
 };
 
+let onNavigateCallback;
+
 const navigate = (path) => {
     window.history.pushState({}, path, window.location.origin + path);
     handleLocation();
@@ -15,13 +17,19 @@ const navigate = (path) => {
 const handleLocation = async () => {
     const path = window.location.pathname;
     const route = routes[path] || routes['/'];
-    const html = await fetch(route.path).then((data) => data.text());
-    document.getElementById('app').innerHTML = html;
-
-    if (window.onNavigate) {
-        window.onNavigate(route.category);
+    try {
+        const response = await fetch(route.path);
+        if (!response.ok) throw new Error(`Failed to fetch ${route.path}`);
+        const html = await response.text();
+        document.getElementById('app').innerHTML = html;
+        setActiveLink();
+        if (onNavigateCallback) {
+            onNavigateCallback(route.category);
+        }
+    } catch (error) {
+        console.error("Routing error:", error);
+        document.getElementById('app').innerHTML = `<p>Error loading page. Please try again.</p>`;
     }
-    setActiveLink();
 };
 
 const setActiveLink = () => {
@@ -34,16 +42,22 @@ const setActiveLink = () => {
     });
 };
 
-window.onpopstate = handleLocation;
-window.route = navigate;
-window.handleLocation = handleLocation; // Expose for initial load
-
-document.addEventListener('DOMContentLoaded', () => {
+const init = (callback) => {
+    onNavigateCallback = callback;
     document.querySelector('nav').addEventListener('click', (e) => {
         if (e.target.matches('a')) {
             e.preventDefault();
             const path = e.target.getAttribute('href');
-            navigate(path);
+            if (path !== window.location.pathname) {
+                navigate(path);
+            }
         }
     });
-});
+    window.onpopstate = handleLocation;
+    handleLocation(); // Initial load
+};
+
+export const router = {
+    init,
+    navigate
+};
