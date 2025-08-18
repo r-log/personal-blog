@@ -3,19 +3,3 @@
     <input type="password" id="password" placeholder="Password">
     <button id="login-btn">Login</button>
 </div>
-
-<script>
-    const loginBtn = document.getElementById('login-btn');
-    if(loginBtn) {
-        loginBtn.onclick = () => {
-            const password = document.getElementById('password').value;
-            // This is a simple, insecure password check for demonstration purposes.
-            if (password === 'admin') {
-                sessionStorage.setItem('isAdmin', 'true');
-                route('/');
-            } else {
-                alert('Incorrect password.');
-            }
-        };
-    }
-</script>
