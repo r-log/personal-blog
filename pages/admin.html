@@ -5,14 +5,17 @@
 </div>
 
 <script>
-    document.getElementById('login-btn').onclick = () => {
-        const password = document.getElementById('password').value;
-        // This is a simple, insecure password check for demonstration purposes.
-        if (password === 'admin') {
-            sessionStorage.setItem('isAdmin', 'true');
-            route('/');
-        } else {
-            alert('Incorrect password.');
-        }
-    };
+    const loginBtn = document.getElementById('login-btn');
+    if(loginBtn) {
+        loginBtn.onclick = () => {
+            const password = document.getElementById('password').value;
+            // This is a simple, insecure password check for demonstration purposes.
+            if (password === 'admin') {
+                sessionStorage.setItem('isAdmin', 'true');
+                route('/');
+            } else {
+                alert('Incorrect password.');
+            }
+        };
+    }
 </script>

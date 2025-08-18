@@ -25,7 +25,9 @@ const handleLocation = async () => {
 
     const pageScript = document.getElementById('app').querySelector('script');
     if (pageScript) {
-        eval(pageScript.innerHTML);
+        const newScript = document.createElement('script');
+        newScript.textContent = pageScript.textContent;
+        document.body.appendChild(newScript).parentNode.removeChild(newScript);
     }
 
     updateAdminUI();
