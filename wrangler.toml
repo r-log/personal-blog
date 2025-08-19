@@ -1,0 +1,11 @@
+name = "personal-blog"
+compatibility_date = "2023-05-18"
+
+[site]
+bucket = "./public"
+
+[build]
+command = "hugo --minify"
+
+[build.upload]
+format = "service-worker"
