@@ -1,15 +1,39 @@
 {{ define "main" }}
 <section class="hero">
-    <h1>Welcome to my blog</h1>
+    <h1 id="greeting">Hey there, friend! 👋</h1>
     <p>{{ .Site.Params.description }}</p>
 </section>
+
+<script>
+    // Rotating greetings for a more organic feel
+    const greetings = [
+        "Welcome, welcome! 🌟",
+        "Hi there, curious mind! 🎯",
+        "Greetings, fellow explorer! 🚀",
+    ];
+    
+    // Select a random greeting
+    const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+    document.getElementById('greeting').textContent = randomGreeting;
+    
+    // Optional: Change greeting on hover for fun interaction
+    document.getElementById('greeting').addEventListener('mouseenter', function() {
+        const newGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+        this.style.transition = 'opacity 0.3s';
+        this.style.opacity = '0';
+        setTimeout(() => {
+            this.textContent = newGreeting;
+            this.style.opacity = '1';
+        }, 300);
+    });
+</script>
 
 <section class="home-content">
     {{ .Content }}
 </section>
 
 <section class="recent-posts">
-    <h2>Recent Posts</h2>
+    <h2>Fresh from the keyboard 📝</h2>
     <div class="posts-grid">
         {{ $pages := where site.RegularPages "Type" "in" (slice "coding" "writing" "music" "careers") }}
         {{ range first 8 $pages.ByDate.Reverse }}

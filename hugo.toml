@@ -6,7 +6,7 @@ enableRobotsTXT = true
 enableGitInfo = false
 
 [params]
-  description = "A place for thoughts, stories, and ideas."
+  description = "Where code meets creativity, and stories find their home. Pull up a chair, grab a coffee, and let's explore together!"
   github = "https://github.com/r-log"
   linkedin = "https://www.linkedin.com/in/roko-kundid-92bba6303/"
 
