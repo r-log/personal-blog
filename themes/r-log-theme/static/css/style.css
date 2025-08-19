@@ -503,7 +503,7 @@ body.light-mode .read-more:active {
 /* Home page content styles */
 .home-content {
     max-width: 1200px;
-    margin: 3rem auto;
+    margin: 1rem auto 3rem;  /* Reduced top margin from 3rem to 1rem */
     padding: 0 2rem;
     line-height: 1.7;
 }
@@ -519,6 +519,11 @@ body.light-mode .read-more:active {
     transform: translateX(-50%);
     border-bottom: 2px solid #FF8C00;
     padding-bottom: 0.5rem;
+}
+
+/* Special styling for the first h2 in home-content to reduce gap from hero section */
+.home-content h2:first-child {
+    margin-top: 0;  /* Remove top margin for first h2 (About Me) */
 }
 
 .home-content h3 {
