@@ -163,7 +163,7 @@ main {
 
 .hero {
     text-align: center;
-    padding: 4rem 0;
+    padding: 0.1rem 0 4rem 0;  /* Reduced top padding from 4rem to 2rem */
 }
 
 .hero h1 {
