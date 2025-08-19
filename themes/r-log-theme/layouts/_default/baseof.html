@@ -64,13 +64,14 @@
         toggleSwitch.addEventListener('change', switchTheme, false);
 
         const logo = document.getElementById('logo');
-        const originalText = logo.textContent;
+        const logoLink = logo.querySelector('a');
+        const originalText = logoLink.textContent;
         const chars = '!<>-_\\/[]{}—=+*^?#________';
 
         const scramble = (text) => {
             let i = 0;
             const interval = setInterval(() => {
-                logo.textContent = text.substring(0, i) + Array.from({ length: text.length - i }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+                logoLink.textContent = text.substring(0, i) + Array.from({ length: text.length - i }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
                 i++;
                 if (i > text.length) clearInterval(interval);
             }, 100);
@@ -86,7 +87,7 @@
                         counter++;
                         if (counter >= 3) {
                             clearInterval(scrambleInterval);
-                            setTimeout(() => logo.textContent = originalText, originalText.length * 100 + 100);
+                            setTimeout(() => logoLink.textContent = originalText, originalText.length * 100 + 100);
                         }
                     }, 500);
                     isScrambled = true;
