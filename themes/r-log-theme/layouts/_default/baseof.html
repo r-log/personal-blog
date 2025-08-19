@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ .Title }} | {{ .Site.Title }}</title>
+    <title>{{ if .IsHome }}Home | {{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
@@ -16,7 +16,12 @@
             <div class="logo" id="logo"><a href="/">{{ .Site.Title }}</a></div>
             <ul>
                 {{ range .Site.Menus.main }}
-                <li><a href="{{ .URL }}" {{ if $.IsMenuCurrent "main" . }}class="active"{{ end }}>{{ .Name }}</a></li>
+                {{ $menuName := .Name }}
+                {{ $isActive := false }}
+                {{ if or ($.IsMenuCurrent "main" .) (eq (printf "/%s/" $.Section) .URL) }}
+                    {{ $isActive = true }}
+                {{ end }}
+                <li><a href="{{ .URL }}" {{ if $isActive }}class="active"{{ end }}>{{ .Name }}</a></li>
                 {{ end }}
             </ul>
             <div class="nav-controls">
