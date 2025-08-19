@@ -1,0 +1,33 @@
+baseURL = 'https://r-log.github.io/'
+languageCode = 'en-us'
+title = 'r-log'
+theme = 'r-log-theme'
+
+[params]
+  description = "A place for thoughts, stories, and ideas."
+  github = "https://github.com/r-log"
+  linkedin = "https://www.linkedin.com/in/roko-kundid-92bba6303/"
+
+[menu]
+  [[menu.main]]
+    name = "coding"
+    url = "/coding/"
+    weight = 1
+  [[menu.main]]
+    name = "writing"
+    url = "/writing/"
+    weight = 2
+  [[menu.main]]
+    name = "music"
+    url = "/music/"
+    weight = 3
+  [[menu.main]]
+    name = "careers"
+    url = "/careers/"
+    weight = 4
+
+[permalinks]
+  coding = "/coding/:slug/"
+  writing = "/writing/:slug/"
+  music = "/music/:slug/"
+  careers = "/careers/:slug/"

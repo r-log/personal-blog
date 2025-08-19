@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} | {{ .Site.Title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo" id="logo"><a href="/">{{ .Site.Title }}</a></div>
+            <ul>
+                {{ range .Site.Menus.main }}
+                <li><a href="{{ .URL }}" {{ if $.IsMenuCurrent "main" . }}class="active"{{ end }}>{{ .Name }}</a></li>
+                {{ end }}
+            </ul>
+            <div class="nav-controls">
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main id="app">
+        {{ block "main" . }}{{ end }}
+    </main>
+    <footer>
+        <div class="social-icons">
+            <a href="{{ .Site.Params.github }}" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="{{ .Site.Params.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </footer>
+    <script>
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.body.classList.add(currentTheme);
+        
+            if (currentTheme === 'light-mode') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light-mode');
+            }
+            else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark-mode');
+            }    
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        const logo = document.getElementById('logo');
+        const originalText = logo.textContent;
+        const chars = '!<>-_\\/[]{}—=+*^?#________';
+
+        const scramble = (text) => {
+            let i = 0;
+            const interval = setInterval(() => {
+                logo.textContent = text.substring(0, i) + Array.from({ length: text.length - i }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+                i++;
+                if (i > text.length) clearInterval(interval);
+            }, 100);
+        };
+
+        let isScrambled = false;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isScrambled) {
+                    let counter = 0;
+                    const scrambleInterval = setInterval(() => {
+                        scramble(originalText);
+                        counter++;
+                        if (counter >= 3) {
+                            clearInterval(scrambleInterval);
+                            setTimeout(() => logo.textContent = originalText, originalText.length * 100 + 100);
+                        }
+                    }, 500);
+                    isScrambled = true;
+                }
+            });
+        });
+
+        observer.observe(logo);
+    </script>
+</body>
+</html>

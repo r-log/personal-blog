@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discovering New Sounds | r-log</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo" id="logo"><a href="/">r-log</a></div>
+            <ul>
+                
+                <li><a href="/coding/" >coding</a></li>
+                
+                <li><a href="/writing/" >writing</a></li>
+                
+                <li><a href="/music/" >music</a></li>
+                
+                <li><a href="/careers/" >careers</a></li>
+                
+            </ul>
+            <div class="nav-controls">
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main id="app">
+        
+<article class="single-post">
+    <header class="post-header">
+        <h1>Discovering New Sounds</h1>
+        <p class="post-meta">
+            <time datetime="2025-01-17">January 17, 2025</time>
+            • By r-log
+        </p>
+    </header>
+    <div class="post-content">
+        <p>Music discovery is an endless journey. In the age of streaming, we have access to more music than ever before, yet finding those hidden gems remains a delightful challenge.</p>
+<h2 id="the-joy-of-discovery">The Joy of Discovery</h2>
+<p>There&rsquo;s something magical about stumbling upon a song that speaks to you. Whether it&rsquo;s:</p>
+<ul>
+<li>A random playlist suggestion</li>
+<li>A friend&rsquo;s recommendation</li>
+<li>Background music in a coffee shop</li>
+<li>An opening act at a concert</li>
+</ul>
+<p>Each discovery adds to your personal soundtrack.</p>
+<h2 id="exploring-genres">Exploring Genres</h2>
+<p>Don&rsquo;t limit yourself to familiar territory. Some ways to expand your horizons:</p>
+<ol>
+<li><strong>Follow record labels</strong> that consistently release quality music</li>
+<li><strong>Explore different cultures</strong> through their traditional and modern music</li>
+<li><strong>Check out festival lineups</strong> for artists you haven&rsquo;t heard</li>
+<li><strong>Dive into subgenres</strong> of styles you already enjoy</li>
+</ol>
+<h2 id="creating-connections">Creating Connections</h2>
+<p>Music connects us to:</p>
+<ul>
+<li><strong>Memories</strong> - Songs become timestamps of our lives</li>
+<li><strong>Emotions</strong> - Processing feelings through melody and lyrics</li>
+<li><strong>Communities</strong> - Bonding over shared musical tastes</li>
+<li><strong>Creativity</strong> - Inspiring our own creative pursuits</li>
+</ul>
+<p>The beauty of music lies not just in what we hear, but in how it makes us feel and the doors it opens to new experiences.</p>
+
+    </div>
+    <footer class="post-footer">
+        <div class="post-navigation">
+            
+            
+        </div>
+    </footer>
+</article>
+
+    </main>
+    <footer>
+        <div class="social-icons">
+            <a href="https://github.com/r-log" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/roko-kundid-92bba6303/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </footer>
+    <script>
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.body.classList.add(currentTheme);
+        
+            if (currentTheme === 'light-mode') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light-mode');
+            }
+            else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark-mode');
+            }    
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        const logo = document.getElementById('logo');
+        const originalText = logo.textContent;
+        const chars = '!<>-_\\/[]{}—=+*^?#________';
+
+        const scramble = (text) => {
+            let i = 0;
+            const interval = setInterval(() => {
+                logo.textContent = text.substring(0, i) + Array.from({ length: text.length - i }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+                i++;
+                if (i > text.length) clearInterval(interval);
+            }, 100);
+        };
+
+        let isScrambled = false;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isScrambled) {
+                    let counter = 0;
+                    const scrambleInterval = setInterval(() => {
+                        scramble(originalText);
+                        counter++;
+                        if (counter >= 3) {
+                            clearInterval(scrambleInterval);
+                            setTimeout(() => logo.textContent = originalText, originalText.length * 100 + 100);
+                        }
+                    }, 500);
+                    isScrambled = true;
+                }
+            });
+        });
+
+        observer.observe(logo);
+    </script>
+</body>
+</html>

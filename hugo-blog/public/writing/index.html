@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing | r-log</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo" id="logo"><a href="/">r-log</a></div>
+            <ul>
+                
+                <li><a href="/coding/" >coding</a></li>
+                
+                <li><a href="/writing/" >writing</a></li>
+                
+                <li><a href="/music/" >music</a></li>
+                
+                <li><a href="/careers/" >careers</a></li>
+                
+            </ul>
+            <div class="nav-controls">
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main id="app">
+        
+<div class="category-header">
+    <h1>Writing</h1>
+</div>
+<div id="posts-container">
+    
+    <article class="post-preview">
+        <h2><a href="http://localhost:1313/writing/the-art-of-blogging/">The Art of Blogging</a></h2>
+        <p class="post-meta">
+            <time datetime="2025-01-18">January 18, 2025</time>
+        </p>
+        <p>Blogging is more than just writing—it&rsquo;s about sharing ideas, connecting with readers, and creating value through content.
+Finding Your Voice Every blogger has a unique perspective. The key is to:
+Write authentically Share your genuine experiences Be consistent in your tone Connect with your audience Content That Matters Great blog posts solve problems or provide insights. Focus on:
+Value: What will readers gain from this post? Clarity: Is your message clear and concise?</p>
+        <a href="http://localhost:1313/writing/the-art-of-blogging/" class="read-more">Read more →</a>
+    </article>
+    
+</div>
+
+    </main>
+    <footer>
+        <div class="social-icons">
+            <a href="https://github.com/r-log" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/roko-kundid-92bba6303/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </footer>
+    <script>
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.body.classList.add(currentTheme);
+        
+            if (currentTheme === 'light-mode') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light-mode');
+            }
+            else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark-mode');
+            }    
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        const logo = document.getElementById('logo');
+        const originalText = logo.textContent;
+        const chars = '!<>-_\\/[]{}—=+*^?#________';
+
+        const scramble = (text) => {
+            let i = 0;
+            const interval = setInterval(() => {
+                logo.textContent = text.substring(0, i) + Array.from({ length: text.length - i }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+                i++;
+                if (i > text.length) clearInterval(interval);
+            }, 100);
+        };
+
+        let isScrambled = false;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isScrambled) {
+                    let counter = 0;
+                    const scrambleInterval = setInterval(() => {
+                        scramble(originalText);
+                        counter++;
+                        if (counter >= 3) {
+                            clearInterval(scrambleInterval);
+                            setTimeout(() => logo.textContent = originalText, originalText.length * 100 + 100);
+                        }
+                    }, 500);
+                    isScrambled = true;
+                }
+            });
+        });
+
+        observer.observe(logo);
+    </script>
+</body>
+</html>
