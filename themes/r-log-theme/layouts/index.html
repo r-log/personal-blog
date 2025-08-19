@@ -15,17 +15,6 @@
     // Select a random greeting
     const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
     document.getElementById('greeting').textContent = randomGreeting;
-    
-    // Optional: Change greeting on hover for fun interaction
-    document.getElementById('greeting').addEventListener('mouseenter', function() {
-        const newGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-        this.style.transition = 'opacity 0.3s';
-        this.style.opacity = '0';
-        setTimeout(() => {
-            this.textContent = newGreeting;
-            this.style.opacity = '1';
-        }, 300);
-    });
 </script>
 
 <section class="home-content">
