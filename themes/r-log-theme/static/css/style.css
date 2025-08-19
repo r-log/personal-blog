@@ -101,7 +101,7 @@ body.light-mode nav ul li a {
 }
 
 main {
-    max-width: 800px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
     flex-grow: 1;
@@ -305,48 +305,112 @@ body.light-mode .close-btn:focus {
     cursor: pointer;
 }
 
-/* Blog post styles */
-.post-preview {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #333;
+/* Grid Layout for Posts */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
-body.light-mode .post-preview {
-    border-bottom: 1px solid #eaeaea;
+@media (min-width: 1200px) {
+    .posts-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
-.post-preview h2 {
+@media (max-width: 768px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Post Card Styles */
+.post-card {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+body.light-mode .post-card {
+    background-color: #f9f9f9;
+    border: 1px solid #eaeaea;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 140, 0, 0.2);
+}
+
+.post-title {
     margin-bottom: 0.5rem;
+    font-size: 1.3rem;
 }
 
-.post-preview h2 a {
-    color: #e0e0e0;
+.post-title a {
+    color: #FF8C00;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-body.light-mode .post-preview h2 a {
-    color: #333;
+.post-title a:hover {
+    color: #ff6600;
 }
 
-.post-preview h2 a:hover {
+body.light-mode .post-title a {
     color: #FF8C00;
 }
 
 .post-meta {
     color: #888;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     margin-bottom: 1rem;
+}
+
+.post-summary {
+    color: #aaa;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+body.light-mode .post-summary {
+    color: #666;
 }
 
 .read-more {
     color: #FF8C00;
     text-decoration: none;
     font-weight: bold;
+    display: inline-block;
+    margin-top: auto;
+    transition: transform 0.3s ease;
 }
 
 .read-more:hover {
-    text-decoration: underline;
+    transform: translateX(5px);
+}
+
+/* Back Button */
+.back-button {
+    margin-bottom: 2rem;
+}
+
+.back-button a {
+    color: #FF8C00;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.back-button a:hover {
+    transform: translateX(-5px);
 }
 
 /* Single post styles */
