@@ -446,6 +446,106 @@ body.light-mode .read-more:active {
     transform: translateX(-5px);
 }
 
+/* Home page content styles */
+.home-content {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+    line-height: 1.7;
+}
+
+.home-content h2 {
+    color: #FF8C00;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    border-bottom: 2px solid #FF8C00;
+    padding-bottom: 0.5rem;
+}
+
+.home-content h3 {
+    color: #e0e0e0;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+body.light-mode .home-content h3 {
+    color: #333;
+}
+
+.home-content p {
+    margin-bottom: 1.25rem;
+}
+
+.home-content ul {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.home-content li {
+    margin-bottom: 0.75rem;
+}
+
+.home-content strong {
+    color: #FF8C00;
+}
+
+.home-content a {
+    color: #FF8C00;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.home-content a:hover {
+    color: #ff6600;
+    text-decoration: underline;
+}
+
+.home-content hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2rem 0;
+}
+
+body.light-mode .home-content hr {
+    border-top: 1px solid #eaeaea;
+}
+
+.home-content em {
+    color: #aaa;
+    font-style: italic;
+}
+
+body.light-mode .home-content em {
+    color: #666;
+}
+
+/* Recent posts section */
+.recent-posts {
+    max-width: 1400px;
+    margin: 4rem auto 2rem;
+    padding: 0 2rem;
+}
+
+.recent-posts h2 {
+    color: #FF8C00;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.recent-posts .posts-grid {
+    margin-top: 2rem;
+}
+
+.post-section {
+    color: #FF8C00;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
 /* Single post styles */
 .single-post {
     max-width: 800px;

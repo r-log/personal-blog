@@ -3,4 +3,26 @@
     <h1>Welcome to my blog</h1>
     <p>{{ .Site.Params.description }}</p>
 </section>
+
+<section class="home-content">
+    {{ .Content }}
+</section>
+
+<section class="recent-posts">
+    <h2>Recent Posts</h2>
+    <div class="posts-grid">
+        {{ $pages := where site.RegularPages "Type" "in" (slice "coding" "writing" "music" "careers") }}
+        {{ range first 8 $pages.ByDate.Reverse }}
+        <article class="post-card">
+            <h3 class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+            <p class="post-meta">
+                <span class="post-section">{{ .Section | title }}</span> • 
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+            </p>
+            <p class="post-summary">{{ .Summary | truncate 150 }}</p>
+            <a href="{{ .Permalink }}" class="read-more">Read more →</a>
+        </article>
+        {{ end }}
+    </div>
+</section>
 {{ end }}
