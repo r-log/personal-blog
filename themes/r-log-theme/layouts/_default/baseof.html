@@ -30,14 +30,17 @@
                     <li><a href="{{ .URL }}" {{ if $isActive }}class="active"{{ end }}>{{ .Name }}</a></li>
                     {{ end }}
                 </ul>
-                <div class="nav-controls">
-                    <div class="theme-switch-wrapper">
-                        <label class="theme-switch" for="checkbox">
-                            <input type="checkbox" id="checkbox" />
-                            <div class="slider round"></div>
-                        </label>
-                    </div>
+            <div class="nav-controls">
+                <button id="search-btn" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
                 </div>
+            </div>
             </div>
         </nav>
     </header>
@@ -50,6 +53,114 @@
             <a href="{{ .Site.Params.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
         </div>
     </footer>
+    
+    <!-- Search Modal -->
+    <div id="search-modal" class="search-modal">
+        <div class="search-modal-content">
+            <span class="search-close">&times;</span>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search articles..." autocomplete="off">
+                <div id="search-results"></div>
+            </div>
+        </div>
+    </div>
+    
+    {{ $searchJSON := slice }}
+    {{ range where site.RegularPages "Type" "in" (slice "coding" "writing" "music" "careers") }}
+        {{ $searchJSON = $searchJSON | append (dict "title" .Title "url" .Permalink "section" .Section "summary" (.Summary | plainify | truncate 200) "content" (.Plain | truncate 500)) }}
+    {{ end }}
+    
+    <script>
+        // Search data - this will hold all articles
+        const searchData = {{ $searchJSON | jsonify | safeJS }};
+
+        // Search functionality
+        const searchBtn = document.getElementById('search-btn');
+        const searchModal = document.getElementById('search-modal');
+        const searchClose = document.querySelector('.search-close');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        // Open search modal
+        searchBtn.addEventListener('click', function() {
+            searchModal.style.display = 'block';
+            searchInput.focus();
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close search modal
+        searchClose.addEventListener('click', function() {
+            searchModal.style.display = 'none';
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+            document.body.style.overflow = '';
+        });
+
+        // Close on outside click
+        window.addEventListener('click', function(e) {
+            if (e.target === searchModal) {
+                searchModal.style.display = 'none';
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchModal.style.display === 'block') {
+                searchModal.style.display = 'none';
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Perform search
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            const results = searchData.filter(item => {
+                return item.title.toLowerCase().includes(query) ||
+                       item.summary.toLowerCase().includes(query) ||
+                       item.content.toLowerCase().includes(query);
+            });
+
+            displayResults(results, query);
+        });
+
+        function displayResults(results, query) {
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="no-results">No results found</div>';
+                return;
+            }
+
+            let html = '';
+            results.forEach(result => {
+                html += `
+                    <div class="search-result-item">
+                        <a href="${result.url}">
+                            <div class="search-result-section">${result.section}</div>
+                            <h3 class="search-result-title">${highlightMatch(result.title, query)}</h3>
+                            <p class="search-result-summary">${highlightMatch(result.summary, query)}</p>
+                        </a>
+                    </div>
+                `;
+            });
+
+            searchResults.innerHTML = html;
+        }
+
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+    </script>
     <script>
         const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
         const currentTheme = localStorage.getItem('theme');
