@@ -14,22 +14,29 @@
     <header>
         <nav>
             <div class="logo" id="logo"><a href="/">{{ .Site.Title }}</a></div>
-            <ul>
-                {{ range .Site.Menus.main }}
-                {{ $menuName := .Name }}
-                {{ $isActive := false }}
-                {{ if or ($.IsMenuCurrent "main" .) (eq (printf "/%s/" $.Section) .URL) }}
-                    {{ $isActive = true }}
-                {{ end }}
-                <li><a href="{{ .URL }}" {{ if $isActive }}class="active"{{ end }}>{{ .Name }}</a></li>
-                {{ end }}
-            </ul>
-            <div class="nav-controls">
-                <div class="theme-switch-wrapper">
-                    <label class="theme-switch" for="checkbox">
-                        <input type="checkbox" id="checkbox" />
-                        <div class="slider round"></div>
-                    </label>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    {{ range .Site.Menus.main }}
+                    {{ $menuName := .Name }}
+                    {{ $isActive := false }}
+                    {{ if or ($.IsMenuCurrent "main" .) (eq (printf "/%s/" $.Section) .URL) }}
+                        {{ $isActive = true }}
+                    {{ end }}
+                    <li><a href="{{ .URL }}" {{ if $isActive }}class="active"{{ end }}>{{ .Name }}</a></li>
+                    {{ end }}
+                </ul>
+                <div class="nav-controls">
+                    <div class="theme-switch-wrapper">
+                        <label class="theme-switch" for="checkbox">
+                            <input type="checkbox" id="checkbox" />
+                            <div class="slider round"></div>
+                        </label>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -101,6 +108,35 @@
         });
 
         observer.observe(logo);
+
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        });
+
+        // Close menu when clicking on a link (mobile)
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            });
+        });
+
+        // Close menu when clicking outside (mobile)
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        });
     </script>
 </body>
 </html>
