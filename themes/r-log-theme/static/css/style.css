@@ -526,7 +526,7 @@ body.light-mode .read-more:active {
     margin-top: 2rem;
     margin-bottom: 1rem;
     font-size: 1.5rem;
-    text-align: center;
+    text-align: left;
 }
 
 body.light-mode .home-content h3 {
@@ -535,15 +535,18 @@ body.light-mode .home-content h3 {
 
 .home-content p {
     margin-bottom: 1.25rem;
+    text-align: left;
 }
 
 .home-content ul {
     margin-bottom: 1.5rem;
     padding-left: 2rem;
+    text-align: left;
 }
 
 .home-content li {
     margin-bottom: 0.75rem;
+    text-align: left;
 }
 
 .home-content strong {
