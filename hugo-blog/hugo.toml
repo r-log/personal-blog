@@ -1,7 +1,9 @@
-baseURL = 'https://r-log.github.io/'
+baseURL = '/'
 languageCode = 'en-us'
 title = 'r-log'
 theme = 'r-log-theme'
+enableRobotsTXT = true
+enableGitInfo = false
 
 [params]
   description = "A place for thoughts, stories, and ideas."

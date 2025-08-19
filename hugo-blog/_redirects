@@ -1,0 +1,3 @@
+# Redirect rules for Cloudflare Pages
+# SPA fallback - this ensures all routes work properly
+/*    /index.html   200
