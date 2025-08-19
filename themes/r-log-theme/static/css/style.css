@@ -358,18 +358,28 @@ body.light-mode .post-card {
     font-size: 1.3rem;
 }
 
-.post-title a {
-    color: #FF8C00;
+.post-title a,
+.post-title a:link,
+.post-title a:visited {
+    color: #FF8C00 !important;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.post-title a:hover {
-    color: #ff6600;
+.post-title a:hover,
+.post-title a:active {
+    color: #ff6600 !important;
 }
 
-body.light-mode .post-title a {
-    color: #FF8C00;
+body.light-mode .post-title a,
+body.light-mode .post-title a:link,
+body.light-mode .post-title a:visited {
+    color: #FF8C00 !important;
+}
+
+body.light-mode .post-title a:hover,
+body.light-mode .post-title a:active {
+    color: #ff6600 !important;
 }
 
 .post-meta {
@@ -389,17 +399,32 @@ body.light-mode .post-summary {
     color: #666;
 }
 
-.read-more {
-    color: #FF8C00;
+.read-more,
+.read-more:link,
+.read-more:visited {
+    color: #FF8C00 !important;
     text-decoration: none;
     font-weight: bold;
     display: inline-block;
     margin-top: auto;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.read-more:hover {
+.read-more:hover,
+.read-more:active {
+    color: #ff6600 !important;
     transform: translateX(5px);
+}
+
+body.light-mode .read-more,
+body.light-mode .read-more:link,
+body.light-mode .read-more:visited {
+    color: #FF8C00 !important;
+}
+
+body.light-mode .read-more:hover,
+body.light-mode .read-more:active {
+    color: #ff6600 !important;
 }
 
 /* Back Button */
