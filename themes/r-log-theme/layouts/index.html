@@ -22,7 +22,7 @@
 </section>
 
 <section class="recent-posts">
-    <h2>Fresh from the keyboard 📝</h2>
+    <h2>Recent articles 📝</h2>
     <div class="posts-grid">
         {{ $pages := where site.RegularPages "Type" "in" (slice "coding" "writing" "music" "careers") }}
         {{ range first 8 $pages.ByDate.Reverse }}
