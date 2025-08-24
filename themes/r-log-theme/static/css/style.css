@@ -418,7 +418,7 @@ body.light-mode .close-btn:focus {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 380px; /* Set a minimum height */
 }
 
 body.light-mode .post-card {
