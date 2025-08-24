@@ -72,7 +72,7 @@
     
     <script>
         // Search data - this will hold all articles
-        const searchData = {{ $searchJSON | jsonify | safeJS }};
+        const searchData = JSON.parse('{{ $searchJSON | jsonify | safeJS }}');
 
         // Search functionality
         const searchBtn = document.getElementById('search-btn');
